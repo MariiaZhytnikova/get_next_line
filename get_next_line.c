@@ -11,134 +11,62 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h" // add this option to your compiler call: -D BUFFER_SIZE=(your number)
-# include <unistd.h>
+// valgrind, gdb and vgdb
 
-///// UTILS
-
-size_t	ft_strlen(const char *s)
+char	*ft_next(char *buffer)
 {
-	size_t	counter;
-
-	counter = 0;
-	while (*s != '\0')
-	{
-		counter++;
-		s++;
-	}
-	return (counter);
-}
-
-char	*ft_strchr(const char *str, int c)
-{
-	while (*str)
-	{
-		if (*str == (unsigned char)c)
-			return ((char *)str);
-		str++;
-	}
-	if (c == '\0')
-		return ((char *)str);
-	return (NULL);
-}
-
-static unsigned int	ft_copy(char *dest, char const *src, unsigned int start)
-{
-	unsigned int	i;
+	int		i;
+	int		j;
+	char	*line;
 
 	i = 0;
-	while (src[i] != '\0')
+	// find len of first line
+	while (buffer[i] && buffer[i] != '\n')
+		i++;
+	// if eol == \0 return NULL
+	if (!buffer[i])
 	{
-		dest[start++] = src[i];
+		free(buffer);
+		return (NULL);
+	}
+	// len of file - len of firstline + 1
+	line = ft_calloc((ft_strlen(buffer) - i + 1), sizeof(char));
+	i++;
+	j = 0;
+	// line == buffer
+	while (buffer[i])
+		line[j++] = buffer[i++];
+	free(buffer);
+	return (line);
+}
+
+// take line for return
+char	*ft_line(char *buffer)
+{
+	char	*line;
+	int		i;
+
+	i = 0;
+	// if no line return NULL
+	if (!buffer[i])
+		return (NULL);
+	// go to the eol
+	while (buffer[i] && buffer[i] != '\n')
+		i++;
+	// malloc to eol
+	line = ft_calloc(i + 2, sizeof(char));
+	i = 0;
+	// line = buffer
+	while (buffer[i] && buffer[i] != '\n')
+	{
+		line[i] = buffer[i];
 		i++;
 	}
-	return (start);
+	// if eol is \0 or \n, replace eol by \n
+	if (buffer[i] && buffer[i] == '\n')
+		line[i++] = '\n';
+	return (line);
 }
-
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	unsigned int		start;
-	unsigned int		end;
-	unsigned int		len_s1;
-	unsigned int		len_s2;
-	char				*str;
-
-	if (!s1 || !s2)
-		return (NULL);
-	len_s1 = ft_strlen(s1);
-	len_s2 = ft_strlen(s2);
-	str = (char *)malloc(sizeof(char) * ((len_s1 + len_s2) + 1));
-	if (!str)
-		return (NULL);
-	start = 0;
-	end = ft_copy(str, s1, start);
-	start = end;
-	end = ft_copy(str, s2, start);
-	str[end] = '\0';
-	return (str);
-}
-
-void	ft_bzero(void *str, size_t n)
-{
-	char	*p;
-
-	if (str == NULL || n == 0)
-		return ;
-	p = (char *)str;
-	while (n--)
-		*p++ = 0;
-}
-
-void	*ft_calloc(size_t num, size_t size)
-{
-	size_t	byte_size;
-	void	*object;
-
-	byte_size = num * size;
-	object = malloc(byte_size);
-	if (!object)
-		return (NULL);
-	ft_bzero (object, byte_size);
-	return (object);
-}
-
-char *append_buffer(char *big_buffer, char *buff)
-{
- char *temp;
-
- temp = ft_strjoin(big_buffer, buff);
- free(big_buffer);
- return (temp);
-}
-
-static char *read_from_file(char *big_buffer, int fd)
-{
-	char *buff;
-	int  bytes_read;
-
-	buff = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
-	if (!buff)
-		return (NULL);
-	bytes_read = 1;
-	while (bytes_read > 0)
- 	{
-		bytes_read = read(fd, buff, BUFFER_SIZE);
-		if (bytes_read == -1)
-		{
-			free(buff)
-			return (NULL);
-		}
-		buff[bytes_read] = '\0';
-		big_buffer = append_buffer(big_buffer, buff);
-		if (ft_strchr(buff, '\n'))
-			break ;
-	}
-	free (buff);
-	return (big_buffer);
-}
-
-
-
-////////////////////////////////
 
 char *get_next_line(int fd)
 {
@@ -163,6 +91,7 @@ char *get_next_line(int fd)
 
 
 //////// MAIN //////////////////////////////////////
+#include <unistd.h>
 #include <stdio.h>
 #include <fcntl.h>
 #include "get_next_line.h" 
