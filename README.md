@@ -9,3 +9,5 @@ C variables:
 https://www.codequoi.com/en/local-global-static-variables-in-c/
 some logic:
 https://www.youtube.com/watch?v=-Mt2FdJjVno
+Valgrind and GDB: 
+https://developers.redhat.com/articles/2021/11/01/debug-memory-errors-valgrind-and-gdb#
