@@ -6,7 +6,7 @@
 /*   By: mzhitnik <mzhitnik@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 12:38:39 by mzhitnik          #+#    #+#             */
-/*   Updated: 2024/11/22 13:36:20 by mzhitnik         ###   ########.fr       */
+/*   Updated: 2024/11/22 12:49:33 by mzhitnik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ char	*read_from_file(char *big_buffer, int fd) // Read from file
 	return (big_buffer); // I want to use pointers
 }
 
-char	*ft_current_line(char *big_buffer, char **line) // Line for return // I can combine the current line and next
+char	*ft_current_line(char *big_buffer, char *line) // Line for return // I can combine the current line and next
 {
 	int		i;
 	int		j;
@@ -54,19 +54,19 @@ char	*ft_current_line(char *big_buffer, char **line) // Line for return // I can
 //		return ;
 	while (big_buffer[i] && big_buffer[i] != '\n') // len of our new line
 		i++;
-	*line = ft_calloc(i + 2, sizeof(char)); //wwhy +2
+	line = ft_calloc(i + 1, sizeof(char));
 	j = 0;
-	while (j < i) // copy buffer too new line
+	while (big_buffer[j] && big_buffer[j] != '\n') // copy buffer too new line
 	{
-		(*line)[j] = big_buffer[j];
+		line[j] = big_buffer[j];
 		j++;
 	}
-	if (big_buffer[j] == '\n')    // '\0' terminate line
-		(*line)[j] = '\n';
-	(*line)[j] = '\0';
-	printf("current line after is: %s\n", *line);
+	printf("current line before NULL terminating is: %s\n", line);
+	if (big_buffer[j] && big_buffer[j] == '\n')    // '\0' terminate line
+		line[j] = '\0';
+	printf("current line after is: %s\n", line);
 	next = ft_calloc((ft_strlen(big_buffer) - i + 1), sizeof(char)); // allocate memory for begining of next line
-	i++;														 // skip \n symbol
+	i++;															 // skip \n symbol
 	j = 0;
 	while (big_buffer[i])
 		next[j++] = big_buffer[i++]; 								 // copy from buffer to next line
@@ -90,10 +90,9 @@ char *get_next_line(int fd)
 		free(big_buffer);
 		return (NULL);
 	}
-	printf("BIG_BUFF befor new line extracted: %s\n", big_buffer);
 	line = NULL;
-	big_buffer = ft_current_line(big_buffer, &line);
-	printf("line after new line extracted: %s\n", line);
+	big_buffer = ft_current_line(big_buffer, line);
+	printf("BIG_BUFF after new line extracted: %s\n", line);
 	printf("BIG_BUFF after new line extracted: %s\n", big_buffer);
 	return (line);
 }
@@ -123,13 +122,13 @@ int main(void)
 		line = get_next_line(fd);
 		if (line == NULL)
 		{
-			printf ("EOF or smthng wrong: line == NULL!");
+			//printf ("EOF or smthng wrong: line == NULL!");
 			break ;
 		}
 		count++;
 		printf("[%d]:%s\n", count, line);
 		free(line);
-		//line = NULL;
+		line = NULL;
 		}
 	close(fd);
 	return (0);
