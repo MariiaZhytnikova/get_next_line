@@ -1,8 +1,8 @@
 Using Valgrind together with GDB (GNU Debugger) is a powerful way to debug your program, especially when you're dealing with memory issues like uninitialized memory, memory leaks, and segmentation faults. By combining the tools, you can both detect memory problems with Valgrind and track down the exact source of the issue using GDB.
 Why Combine Valgrind and GDB?
 
-    Valgrind helps you identify memory-related issues such as invalid memory accesses, memory leaks, and uninitialized memory reads, but it doesn't give you a line-by-line debugger interface.
-    GDB lets you debug your program interactively, setting breakpoints, stepping through the code, and inspecting the program's state at runtime.
+Valgrind helps you identify memory-related issues such as invalid memory accesses, memory leaks, and uninitialized memory reads, but it doesn't give you a line-by-line debugger interface.
+GDB lets you debug your program interactively, setting breakpoints, stepping through the code, and inspecting the program's state at runtime.
 
 By combining the two, you can pinpoint exactly where in your code Valgrind detects a memory issue, and then use GDB to inspect the code and fix the problem.
 Steps to Use Valgrind with GDB
@@ -21,7 +21,7 @@ You can run your program under Valgrind and simultaneously invoke GDB if Valgrin
 
 Here’s the command to run Valgrind with GDB support:
 
-valgrind --vgdb=yes --vgdb-error=0 ./my_program
+    valgrind --vgdb=yes --vgdb-error=0 ./my_program
 
 Here’s what each part of the command does:
 
