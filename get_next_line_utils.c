@@ -6,7 +6,7 @@
 /*   By: mzhitnik <mzhitnik@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 12:40:51 by mzhitnik          #+#    #+#             */
-/*   Updated: 2024/11/22 12:26:13 by mzhitnik         ###   ########.fr       */
+/*   Updated: 2024/11/26 15:48:13 by mzhitnik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	*ft_calloc(size_t num, size_t size)
 {
 	size_t	byte_size;
 	size_t	i;
-	size_t	*object;
+	unsigned char *object;
 
 	if (size != 0 && num > (SIZE_MAX / size))
 		return (NULL);
@@ -79,7 +79,10 @@ void	*ft_calloc(size_t num, size_t size)
 	if (!object)
 		return (NULL);
 	i = 0;
-	while (object[i])
-		object[i++] = 0;
+	while (i < byte_size)
+	{
+		object[i] = 0;
+		i++;
+	}
 	return (object);
 }
