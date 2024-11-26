@@ -64,10 +64,17 @@ Once GDB is attached, you can use the following commands to inspect and control 
    - bt (backtrace): Prints the stack trace to see where the program crashed.
    - info locals: Lists all local variables in the current function.
    - info registers: Displays the CPU registers.
-   - list: Shows the source code around the current line.
-   - step: Steps into the next function call.
-   - next: Steps over the next function call (i.e., executes it without stepping inside it).
-   - continue: Continues the execution until the next breakpoint or error.
+   - step:        Steps into the next function call.
+   - run or r:    Executes the program from start to end.
+   - break or b:  Sets a breakpoint on a particular line.
+   - enable:      Enables a disabled breakpoint.
+   - disable:     Disables a breakpoint.
+   - list or l:   Shows the source code around the current line.
+   - print or p:  Displays the value of a variable.
+   - next or n:   Steps over the next function call (i.e., executes it without stepping inside it).
+   - clear:       Clears all breakpoints.
+   - continue:    Continues the execution until the next breakpoint or error.
+   - quit or q:   Exits out of GDB.
 
 For example:
 
