@@ -71,10 +71,11 @@ Once GDB is attached, you can use the following commands to inspect and control 
 
 For example:
 
-(gdb) bt
-#0  0x401234 in some_function (some_file.c:42)
-#1  0x402345 in another_function (some_file.c:56)
-#2  0x403456 in main (main.c:10)
+    (gdb) bt
+
+    #0  0x401234 in some_function (some_file.c:42)
+    #1  0x402345 in another_function (some_file.c:56)
+    #2  0x403456 in main (main.c:10)
 
 You can use this information to understand where the error occurred in the code and interactively step through your program to fix the issue.
 # 6. Fix the Bug and Re-run
