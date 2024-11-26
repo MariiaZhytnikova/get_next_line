@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_to long.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mzhitnik <mzhitnik@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 12:38:39 by mzhitnik          #+#    #+#             */
-/*   Updated: 2024/11/22 12:49:33 by mzhitnik         ###   ########.fr       */
+/*   Updated: 2024/11/26 15:33:45 by mzhitnik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <unistd.h>        // valgrind, gdb and vgdb
 #include <stdio.h> // DELETE MEEEEEE
 
-char	*read_from_file(char *big_buffer, int fd) // Read from file
+void	read_from_file(char **big_buffer, int fd)
 {
 	char *buff;
 	char *temp;
@@ -22,7 +22,7 @@ char	*read_from_file(char *big_buffer, int fd) // Read from file
 
 	buff = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
 	if (!buff)
-		return (NULL);
+		return ;
 	bytes_read = 1;
 	while (bytes_read > 0)
  	{
@@ -30,48 +30,51 @@ char	*read_from_file(char *big_buffer, int fd) // Read from file
 		if (bytes_read == -1)
 		{
 			free(buff);
-			return (NULL);
+			return ;
 		}
 		buff[bytes_read] = '\0';
- 		temp = ft_strjoin(big_buffer, buff);
- 		free(big_buffer);
- 		big_buffer = temp;
-		if (ft_strchr(buff, '\n')) // we read from file till find '/n' symbol
+		temp = ft_strjoin(*big_buffer, buff);
+ 		free(*big_buffer);
+ 		*big_buffer = temp;
+		if (ft_strchr(buff, '\n'))
 			break ;
 	}
 	free (buff);
-	return (big_buffer); // I want to use pointers
 }
 
-char	*ft_current_line(char *big_buffer, char *line) // Line for return // I can combine the current line and next
+void	ft_line_res(char **big_buffer, char **line)
 {
 	int		i;
 	int		j;
 	char	*next;
 
 	i = 0;
-//	if (!buffer[i])
-//		return ;
-	while (big_buffer[i] && big_buffer[i] != '\n') // len of our new line
+	while ((*big_buffer)[i] && (*big_buffer)[i] != '\n')
 		i++;
-	line = ft_calloc(i + 1, sizeof(char));
+	*line = ft_calloc(i + 2, sizeof(char));
 	j = 0;
-	while (big_buffer[j] && big_buffer[j] != '\n') // copy buffer too new line
+	while (j < i)
 	{
-		line[j] = big_buffer[j];
+		(*line)[j] = (*big_buffer)[j];
 		j++;
 	}
-	printf("current line before NULL terminating is: %s\n", line);
-	if (big_buffer[j] && big_buffer[j] == '\n')    // '\0' terminate line
-		line[j] = '\0';
-	printf("current line after is: %s\n", line);
-	next = ft_calloc((ft_strlen(big_buffer) - i + 1), sizeof(char)); // allocate memory for begining of next line
-	i++;															 // skip \n symbol
+	if ((*big_buffer)[j] == '\n')
+		(*line)[j++] = '\n'; 
+	(*line)[j] = '\0';
+	////////////////////NEXT//////////////////////////////
+	if ((*big_buffer)[i] == '\0')
+	{
+		free(big_buffer);
+		return ;
+	}
+	next = ft_calloc((ft_strlen(*big_buffer) - i++ + 1), sizeof(char));
 	j = 0;
-	while (big_buffer[i])
-		next[j++] = big_buffer[i++]; 								 // copy from buffer to next line
-	free(big_buffer);
-	return (next);		
+	while ((*big_buffer)[i] != '\0')
+		next[j++] = (*big_buffer)[i++];
+	next[j] = '\0';
+	free(*big_buffer);
+	*big_buffer = next;
+	////////////////////////////////////////////////////////
 }
 
 char *get_next_line(int fd)
@@ -79,21 +82,19 @@ char *get_next_line(int fd)
 	static char	*big_buffer;
 	char		*line;
 
-	if (fd < 0 || read(fd, NULL, 0) < 0 || BUFFER_SIZE <= 0)  // Start check
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (!big_buffer)
-		big_buffer = ft_calloc(1, sizeof (char)); 
+			big_buffer = ft_calloc(1, sizeof (char));
 	if (!ft_strchr(big_buffer, '\n'))
-		big_buffer = read_from_file(big_buffer, fd);
-	if (!big_buffer)
+		read_from_file(&big_buffer, fd);
+	if (!big_buffer || !big_buffer[0])
 	{
 		free(big_buffer);
 		return (NULL);
 	}
 	line = NULL;
-	big_buffer = ft_current_line(big_buffer, line);
-	printf("BIG_BUFF after new line extracted: %s\n", line);
-	printf("BIG_BUFF after new line extracted: %s\n", big_buffer);
+	ft_line_res(&big_buffer, &line);
 	return (line);
 }
 
@@ -104,32 +105,31 @@ char *get_next_line(int fd)
 #include <fcntl.h>
 #include "get_next_line.h" 
 
-int main(void)
+int main(int argc, char** argv)
 {
-	int    fd;
-	char  *line;
-	int  count;
+ int  fd;
+ char *line;
+ int  count;
 
-	count = 0;
-	fd = open("test.txt", O_RDONLY);
-	if (fd == -1)
-	{
-		printf("Error opening file");
-		return (1);
-	}
-	while (1)
-	{
-		line = get_next_line(fd);
-		if (line == NULL)
-		{
-			//printf ("EOF or smthng wrong: line == NULL!");
-			break ;
-		}
-		count++;
-		printf("[%d]:%s\n", count, line);
-		free(line);
-		line = NULL;
-		}
-	close(fd);
-	return (0);
+ (void)argc;
+ (void)argv;
+ count = 0;
+ fd = open("test.txt", O_RDONLY);
+ if (fd == -1)
+ {
+  printf("Error opening file");
+  return (1);
+ }
+ while (1)
+ {
+	line = get_next_line(fd);
+	if (line == NULL)
+		break ;
+	count++;
+	printf("[%d]:%s", count, line);
+	free(line);
+	line = NULL;
+ }
+ close(fd);
+ return (0);
 }
