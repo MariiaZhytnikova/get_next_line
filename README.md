@@ -6,7 +6,7 @@ Why Combine Valgrind and GDB?
 
 By combining the two, you can pinpoint exactly where in your code Valgrind detects a memory issue, and then use GDB to inspect the code and fix the problem.
 Steps to Use Valgrind with GDB
-1. Compile Your Program with Debugging Symbols
+# 1. Compile Your Program with Debugging Symbols
 
 First, ensure you compile your program with debugging symbols (-g flag) so that GDB can give you meaningful information (such as line numbers and variable names) while debugging.
 
@@ -15,7 +15,7 @@ For example, to compile your program with debugging symbols:
 gcc -g -o my_program my_program.c
 
 This generates an executable my_program with debugging symbols.
-2. Run Your Program with Valgrind and GDB
+# 2. Run Your Program with Valgrind and GDB
 
 You can run your program under Valgrind and simultaneously invoke GDB if Valgrind detects an error. Use the --vgdb=yes option to make Valgrind start in "VGDB" mode, which allows GDB to attach to it.
 
@@ -29,7 +29,7 @@ Here’s what each part of the command does:
     --vgdb-error=0: Tells Valgrind to start waiting for GDB to attach as soon as it detects an error (e.g., memory issue).
     ./my_program: Your program to run under Valgrind.
 
-3. Attach GDB to Valgrind
+# 3. Attach GDB to Valgrind
 
 Once Valgrind detects an issue (like an invalid memory access, uninitialized value, or memory leak), it will pause and wait for GDB to attach. You will see output like this:
 
@@ -50,14 +50,14 @@ Open a new terminal window (or use the same terminal, but run gdb in the backgro
 
 gdb ./my_program
 
-4. Connect GDB to Valgrind
+# 4. Connect GDB to Valgrind
 
 Now, in the GDB session, run the following command to connect GDB to the Valgrind process:
 
 target remote | vgdb
 
 This connects GDB to the Valgrind process and allows you to use GDB’s interactive features to debug your program.
-5. Debugging with GDB
+# 5. Debugging with GDB
 
 Once GDB is attached, you can use the following commands to inspect and control your program:
 
@@ -77,7 +77,7 @@ For example:
 #2  0x403456 in main (main.c:10)
 
 You can use this information to understand where the error occurred in the code and interactively step through your program to fix the issue.
-6. Fix the Bug and Re-run
+# 6. Fix the Bug and Re-run
 
 After inspecting the stack trace and stepping through the code in GDB, you can make the necessary changes in your code to fix the issue. After you fix the bug, recompile your code and run Valgrind again to ensure the issue is resolved.
 Example of the Entire Workflow:
