@@ -102,6 +102,21 @@ Connect GDB to Valgrind:
     Use GDB commands to investigate the error and debug the issue interactively.
 # 7. Stopping GDB Debugging
 
+Exit Valgrind via GDB: If you're using Valgrind with VGDB (i.e., running Valgrind with GDB connected), you can stop Valgrind from GDB as well:
+        Detach from the Valgrind process: In GDB, you can detach from the Valgrind process without killing it by using the detach command.
+
+    (gdb) detach
+
+Quit GDB: After detaching, you can quit GDB as usual with the quit command:
+
+    (gdb) quit
+
+GDB will ask if you want to quit, especially if the program is still running or has been started. Just confirm by typing y for "yes."
+
+    Quit anyway? (y or n) y
+
+# 8. Alternative Stopping GDB Debugging
+
 If you are running your program in GDB and want to stop the debugging session, you can use the following commands:
 
     Quit GDB: To exit GDB entirely, you can use the quit command. This will stop the debugging session and close GDB.
@@ -114,4 +129,16 @@ GDB will ask if you want to quit, especially if the program is still running or 
 
 This will stop the debugging session and return you to the terminal.
 
+# 8. Terminate Valgrind from Another Terminal
 
+If for some reason Valgrind isn't responding or you want to forcibly stop it from another terminal window, you can:
+
+Find the process ID (PID) of the Valgrind process:
+
+    ps aux | grep valgrind
+
+Kill the process using the PID (replace <pid> with the actual process ID you found):
+
+    kill -9 <pid>
+
+This will stop the Valgrind process and any associated debugging.
