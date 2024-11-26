@@ -129,7 +129,7 @@ GDB will ask if you want to quit, especially if the program is still running or 
 
 This will stop the debugging session and return you to the terminal.
 
-# 8. Terminate Valgrind from Another Terminal
+## Terminate Valgrind from Another Terminal
 
 If for some reason Valgrind isn't responding or you want to forcibly stop it from another terminal window, you can:
 
