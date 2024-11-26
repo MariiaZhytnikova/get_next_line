@@ -61,13 +61,13 @@ This connects GDB to the Valgrind process and allows you to use GDB’s interact
 
 Once GDB is attached, you can use the following commands to inspect and control your program:
 
-    bt (backtrace): Prints the stack trace to see where the program crashed.
-    info locals: Lists all local variables in the current function.
-    info registers: Displays the CPU registers.
-    list: Shows the source code around the current line.
-    step: Steps into the next function call.
-    next: Steps over the next function call (i.e., executes it without stepping inside it).
-    continue: Continues the execution until the next breakpoint or error.
+   - bt (backtrace): Prints the stack trace to see where the program crashed.
+   - info locals: Lists all local variables in the current function.
+   - info registers: Displays the CPU registers.
+   - list: Shows the source code around the current line.
+   - step: Steps into the next function call.
+   - next: Steps over the next function call (i.e., executes it without stepping inside it).
+   - continue: Continues the execution until the next breakpoint or error.
 
 For example:
 
