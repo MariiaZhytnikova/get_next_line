@@ -6,7 +6,7 @@
 /*   By: mzhitnik <mzhitnik@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 12:38:39 by mzhitnik          #+#    #+#             */
-/*   Updated: 2024/11/26 15:49:36 by mzhitnik         ###   ########.fr       */
+/*   Updated: 2024/11/27 15:10:57 by mzhitnik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,46 +42,47 @@ void	read_from_file(char **big_buffer, int fd)
 	free (buff);
 }
 
-void	ft_line_res(char **big_buffer, char **line)
+void	ft_line_res(char **big_buffer, char **line, int buff_len, int line_len) // get lenghts here
 {
-	int		i;
-	int		j;
 	char	*next;
+	int		j;
 
-	i = 0;
-	while ((*big_buffer)[i] && (*big_buffer)[i] != '\n')
-		i++;
-	*line = ft_calloc(i + 2, sizeof(char));
+	*line = ft_calloc(line_len + 2, sizeof(char));
+	if (!(*line))
+		return ;
 	j = 0;
-	while (j < i)
-	{
-		(*line)[j] = (*big_buffer)[j];
-		j++;
-	}
-	if ((*big_buffer)[j] == '\n')
+	while (**big_buffer && **big_buffer != '\n')
+    	(*line)[j++] = *(*big_buffer)++;
+	if (*big_buffer == '\n')
 		(*line)[j++] = '\n'; 
 	(*line)[j] = '\0';
-	if ((*big_buffer)[i])
+	if (**big_buffer == '\0')
 	{
-	next = ft_calloc((ft_strlen(*big_buffer) - i++ + 1), sizeof(char));
+		free(*big_buffer);
+		return ;
+	}
+	next = ft_calloc((buff_len - line_len + 1), sizeof(char));
+	if (!next)
+		return ;
 	j = 0;
-	while ((*big_buffer)[i] != '\0')
-		next[j++] = (*big_buffer)[i++];
+	while (**big_buffer != '\0')
+		next[j++] = *(*big_buffer)++;
 	next[j] = '\0';
 	free(*big_buffer);
 	*big_buffer = next;
-	}
 }
 
 char *get_next_line(int fd)
 {
 	static char	*big_buffer;
 	char		*line;
+	int		line_len = 0;
+	int		buff_len = 0;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (!big_buffer)
-			big_buffer = ft_calloc(1, sizeof (char));
+		big_buffer = ft_calloc(1, sizeof (char));
 	if (!ft_strchr(big_buffer, '\n'))
 		read_from_file(&big_buffer, fd);
 	if (!big_buffer || !big_buffer[0])
@@ -89,8 +90,14 @@ char *get_next_line(int fd)
 		free(big_buffer);
 		return (NULL);
 	}
+	line_len = 0;
+	buff_len = 0;
+	while (big_buffer[line_len] && big_buffer[line_len] != '\n')
+		line_len++;
+	while (big_buffer[buff_len])
+		buff_len++;
 	line = NULL;
-	ft_line_res(&big_buffer, &line);
+	ft_line_res(&big_buffer, &line, buff_len, line_len); // lenghts added
 	return (line);
 }
 
