@@ -33,16 +33,16 @@ Here’s what each part of the command does:
 
 Once Valgrind detects an issue (like an invalid memory access, uninitialized value, or memory leak), it will pause and wait for GDB to attach. You will see output like this:
 
-==1234== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
-==1234==    at 0x401234: function_name (file.c:line)
-==1234==    by 0x402345: another_function (file.c:line)
-==1234==    by 0x403456: main (main.c:line)
-==1234==    Address 0x... is 12 bytes inside a block of size 32 alloc'd
-==1234==    at 0x... in malloc
-==1234==    by 0x... in your_function
-==1234==    by 0x... in main
-==1234==
-==1234== For more details, rerun with: -v
+    ==1234== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+    ==1234==    at 0x401234: function_name (file.c:line)    
+    ==1234==    by 0x402345: another_function (file.c:line)
+    ==1234==    by 0x403456: main (main.c:line)
+    ==1234==    Address 0x... is 12 bytes inside a block of size 32 alloc'd
+    ==1234==    at 0x... in malloc
+    ==1234==    by 0x... in your_function
+    ==1234==    by 0x... in main
+    ==1234==
+    ==1234== For more details, rerun with: -v
 
 At this point, Valgrind will give you information about the issue and will be waiting for you to start GDB.
 
