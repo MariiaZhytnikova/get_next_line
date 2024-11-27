@@ -1,30 +1,5 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mzhitnik <mzhitnik@student.hive.fi>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/16 12:40:51 by mzhitnik          #+#    #+#             */
-/*   Updated: 2024/11/26 15:48:13 by mzhitnik         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "get_next_line.h"
 #include <stdint.h>
-
-size_t	ft_strlen(const char *s)
-{
-	size_t	counter;
-
-	counter = 0;
-	while (*s != '\0')
-	{
-		counter++;
-		s++;
-	}
-	return (counter);
-}
 
 char	*ft_strchr(const char *str, int c)
 {
@@ -41,28 +16,26 @@ char	*ft_strchr(const char *str, int c)
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	size_t	i;
-	size_t	j;
+	size_t	s1_len;
+	size_t	s2_len;
 	char	*str;
 
 	if (!s1 && !s2)
 		return (NULL);
-	str = (char *)malloc(sizeof(char) * ((ft_strlen(s1) + ft_strlen(s2)) + 1));
+	s1_len = 0;
+	s2_len = 0;
+	while (s1[s1_len])
+		s1_len++;
+	while (s2[s2_len])
+		s2_len++;
+	str = ft_calloc((s1_len + s2_len + 1), sizeof(char));
 	if (!str)
 		return (NULL);
-	i = 0;
-	while (s1[i])
-	{
-		str[i] = s1[i];
-		i++;
-	}
-	j = 0;
-		while (s2[j])
-	{
-		str[i + j] = s2[j];
-		j++;
-	}
-	str[i + j] = '\0';
+	while (s1_len-- > 0)
+		*str++ = *s1;
+		while (s1_len-- > 0)
+		*str++ = *s2++;
+	str[s1_len + s2_len] = '\0';
 	return (str);
 }
 
