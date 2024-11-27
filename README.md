@@ -12,7 +12,7 @@ First, ensure you compile your program with debugging symbols (-g flag) so that 
 
 For example, to compile your program with debugging symbols:
 
-gcc -g -o my_program my_program.c
+    gcc -g -o my_program my_program.c
 
 This generates an executable my_program with debugging symbols.
 # 2. Run Your Program with Valgrind and GDB
@@ -48,13 +48,13 @@ At this point, Valgrind will give you information about the issue and will be wa
 
 Open a new terminal window (or use the same terminal, but run gdb in the background) and run GDB:
 
-gdb ./my_program
+    gdb ./my_program
 
 # 4. Connect GDB to Valgrind
 
 Now, in the GDB session, run the following command to connect GDB to the Valgrind process:
 
-target remote | vgdb
+    target remote | vgdb
 
 This connects GDB to the Valgrind process and allows you to use GDB’s interactive features to debug your program.
 # 5. Debugging with GDB
@@ -90,17 +90,17 @@ You can use this information to understand where the error occurred in the code 
 After inspecting the stack trace and stepping through the code in GDB, you can make the necessary changes in your code to fix the issue. After you fix the bug, recompile your code and run Valgrind again to ensure the issue is resolved.
 Example of the Entire Workflow:
 
-    Compile with debug symbols:
+ Compile with debug symbols:
 
-gcc -g -o my_program my_program.c
+    gcc -g -o my_program my_program.c
 
 Run Valgrind with GDB support:
 
-valgrind --vgdb=yes --vgdb-error=0 ./my_program
+    valgrind --vgdb=yes --vgdb-error=0 ./my_program
 
 Attach GDB: In a new terminal:
 
-gdb ./my_program
+    gdb ./my_program
 
 Connect GDB to Valgrind:
 
