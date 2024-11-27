@@ -6,7 +6,7 @@
 /*   By: mzhitnik <mzhitnik@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 12:38:39 by mzhitnik          #+#    #+#             */
-/*   Updated: 2024/11/27 15:10:57 by mzhitnik         ###   ########.fr       */
+/*   Updated: 2024/11/27 15:41:16 by mzhitnik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,16 @@
 
 void	read_from_file(char **big_buffer, int fd)
 {
-	char *buff;
+	char buff[BUFFER_SIZE];
 	char *temp;
 	int  bytes_read;
 
-	buff = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
-	if (!buff)
-		return ;
 	bytes_read = 1;
 	while (bytes_read > 0)
  	{
 		bytes_read = read(fd, buff, BUFFER_SIZE);
 		if (bytes_read == -1)
-		{
-			free(buff);
-			return ;
-		}
+				return ;
 		buff[bytes_read] = '\0';
 		temp = ft_strjoin(*big_buffer, buff);
  		free(*big_buffer);
@@ -39,12 +33,11 @@ void	read_from_file(char **big_buffer, int fd)
 		if (ft_strchr(buff, '\n'))
 			break ;
 	}
-	free (buff);
 }
 
-void	ft_line_res(char **big_buffer, char **line, int buff_len, int line_len) // get lenghts here
+void	ft_line_res(char **big_buffer, char **line, int buff_len, int line_len)
 {
-	char	*next;
+	char	next[buff_len - line_len + 1];
 	int		j;
 
 	*line = ft_calloc(line_len + 2, sizeof(char));
@@ -53,7 +46,7 @@ void	ft_line_res(char **big_buffer, char **line, int buff_len, int line_len) // 
 	j = 0;
 	while (**big_buffer && **big_buffer != '\n')
     	(*line)[j++] = *(*big_buffer)++;
-	if (*big_buffer == '\n')
+	if (**big_buffer == '\n')
 		(*line)[j++] = '\n'; 
 	(*line)[j] = '\0';
 	if (**big_buffer == '\0')
@@ -61,9 +54,6 @@ void	ft_line_res(char **big_buffer, char **line, int buff_len, int line_len) // 
 		free(*big_buffer);
 		return ;
 	}
-	next = ft_calloc((buff_len - line_len + 1), sizeof(char));
-	if (!next)
-		return ;
 	j = 0;
 	while (**big_buffer != '\0')
 		next[j++] = *(*big_buffer)++;
