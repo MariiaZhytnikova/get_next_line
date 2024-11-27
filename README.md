@@ -106,7 +106,7 @@ Connect GDB to Valgrind:
 
     target remote | vgdb
 
-    Use GDB commands to investigate the error and debug the issue interactively.
+Use GDB commands to investigate the error and debug the issue interactively.
 # 7. Stopping GDB Debugging
 
 Exit Valgrind via GDB: If you're using Valgrind with VGDB (i.e., running Valgrind with GDB connected), you can stop Valgrind from GDB as well:
@@ -126,7 +126,7 @@ GDB will ask if you want to quit, especially if the program is still running or 
 
 If you are running your program in GDB and want to stop the debugging session, you can use the following commands:
 
-    Quit GDB: To exit GDB entirely, you can use the quit command. This will stop the debugging session and close GDB.
+ Quit GDB: To exit GDB entirely, you can use the quit command. This will stop the debugging session and close GDB.
 
     (gdb) quit
 
