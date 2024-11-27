@@ -6,7 +6,7 @@
 /*   By: mzhitnik <mzhitnik@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 12:40:51 by mzhitnik          #+#    #+#             */
-/*   Updated: 2024/11/27 15:52:10 by mzhitnik         ###   ########.fr       */
+/*   Updated: 2024/11/27 16:50:39 by mzhitnik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,36 +30,40 @@ char	*ft_strjoin(char const *s1, char const *s2)
 {
 	size_t	s1_len;
 	size_t	s2_len;
-	char	*str;
+	char	*res;
+	size_t	i;
 
-	if (!s1 && !s2)
-		return (NULL);
+	res = NULL;
 	s1_len = 0;
 	s2_len = 0;
-	while (s1[s1_len])
-		s1_len++;
-	while (s2[s2_len])
-		s2_len++;
-	str = ft_calloc((s1_len + s2_len + 1), sizeof(char));
-	if (!str)
+	if (s1)
+		while (s1[s1_len])
+			s1_len++;
+	if (s2)
+		while (s2[s2_len])
+			s2_len++;
+	res = ft_calloc((s1_len + s2_len + 1), sizeof(char));
+	if (!res)
 		return (NULL);
-	while (s1_len-- > 0)
-		*str++ = *s1;
-		while (s1_len-- > 0)
-		*str++ = *s2++;
-	str[s1_len + s2_len] = '\0';
-	return (str);
+	i = 0;
+	while (i < s1_len)
+		res[i++] = *s1++;
+	while (i < s1_len + s2_len)
+		res[i++] = *s2++;
+	return (res);
 }
 
 void	*ft_calloc(size_t num, size_t size)
 {
-	size_t	byte_size;
-	size_t	i;
-	unsigned char *object;
+	size_t			byte_size;
+	size_t			i;
+	unsigned char	*object;
 
 	if (size != 0 && num > (SIZE_MAX / size))
 		return (NULL);
 	byte_size = num * size;
+	if (byte_size == 0)
+		return (NULL);
 	object = malloc(byte_size);
 	if (!object)
 		return (NULL);
@@ -69,5 +73,5 @@ void	*ft_calloc(size_t num, size_t size)
 		object[i] = 0;
 		i++;
 	}
-	return (object);
+	return ((void *)object);
 }
