@@ -61,20 +61,22 @@ This connects GDB to the Valgrind process and allows you to use GDB’s interact
 
 Once GDB is attached, you can use the following commands to inspect and control your program:
 
-   - bt (backtrace): Prints the stack trace to see where the program crashed.
-   - info locals: Lists all local variables in the current function.
-   - info registers: Displays the CPU registers.
-   - step:        Steps into the next function call.
-   - run or r:    Executes the program from start to end.
-   - break or b:  Sets a breakpoint on a particular line.
-   - enable:      Enables a disabled breakpoint.
-   - disable:     Disables a breakpoint.
-   - list or l:   Shows the source code around the current line.
-   - print or p:  Displays the value of a variable.
-   - next or n:   Steps over the next function call (i.e., executes it without stepping inside it).
-   - clear:       Clears all breakpoints.
-   - continue:    Continues the execution until the next breakpoint or error.
-   - quit or q:   Exits out of GDB.
+| Command | Description |
+|---------|-------------|
+| bt (backtrace) | Prints the stack trace to see where the program crashed. |
+| info locals | Lists all local variables in the current function. |
+| info registers | Displays the CPU registers. |
+| step |        Steps into the next function call. |
+| run or r |    Executes the program from start to end. |
+| break or b |  Sets a breakpoint on a particular line. |
+| enable |      Enables a disabled breakpoint. |
+| disable |     Disables a breakpoint. |
+| list or l |   Shows the source code around the current line. |
+| print or p |  Displays the value of a variable. |
+| next or n |   Steps over the next function call (i.e., executes it without stepping inside it). |
+| clear |       Clears all breakpoints. |
+| continue |    Continues the execution until the next breakpoint or error. |
+| quit or q |   Exits out of GDB. |
 
 For example:
 
