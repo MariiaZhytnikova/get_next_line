@@ -6,12 +6,11 @@
 /*   By: mzhitnik <mzhitnik@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 12:40:51 by mzhitnik          #+#    #+#             */
-/*   Updated: 2024/11/27 16:50:39 by mzhitnik         ###   ########.fr       */
+/*   Updated: 2024/11/28 18:36:17 by mzhitnik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdint.h>
 
 char	*ft_strchr(const char *str, int c)
 {
@@ -74,4 +73,60 @@ void	*ft_calloc(size_t num, size_t size)
 		i++;
 	}
 	return ((void *)object);
+}
+
+void	read_from_file(char **big_buffer, int fd)
+{
+	char	*buff;
+	char	*temp;
+	int		bytes_read;
+
+	buff = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
+	if (!buff)
+		return ;
+	bytes_read = 1;
+	while (bytes_read > 0)
+	{
+		bytes_read = read(fd, buff, BUFFER_SIZE);
+		if (bytes_read == -1)
+		{
+			free(buff);
+			return ;
+		}
+		buff[bytes_read] = '\0';
+		temp = ft_strjoin(*big_buffer, buff);
+		free(*big_buffer);
+		*big_buffer = temp;
+		if (ft_strchr(buff, '\n'))
+			break ;
+	}
+	free (buff);
+}
+
+void	ft_line_res(char **big_buffer, char **line, int buff_len, int line_len)
+{
+	char	*next;
+	int		j;
+	int		i;
+
+	*line = ft_calloc(line_len + 2, sizeof(char));
+	if (!(*line))
+		return ;
+	j = 0;
+	while (j++ < line_len)
+		(*line)[j - 1] = (*big_buffer)[j - 1];
+	j--;
+	if ((*big_buffer)[j] == '\n')
+		(*line)[j++] = '\n';
+	(*line)[j++] = '\0';
+	j = 0;
+	i = line_len +1;
+	next = ft_calloc(buff_len - line_len + 1, sizeof(char));
+	if (!next)
+		return ;
+	while ((*big_buffer)[i] != '\0')
+		next[j++] = (*big_buffer)[i++];
+	next[j] = '\0';
+	free(*big_buffer);
+	*big_buffer = next;
 }
