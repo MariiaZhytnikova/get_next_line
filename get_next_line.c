@@ -79,4 +79,19 @@ int	main(int argc, char** argv)
 	}
 	close(fd);
 	return (0);
-}*/
+}
+files/alternate_line_nl_no_nl: 1.OK 2.OK 3.OK 4.OK 5.OK 6.OK 7.OK 8.OK ==83750== Invalid read of size 1
+==83750==    at 0x4078A1: ft_line_res (get_next_line_utils.c:130)
+==83750==    by 0x407437: get_next_line (get_next_line.c:44)
+==83750==    by 0x402CD6: gnl(int, char const*) (gnl.cpp:20)
+==83750==    by 0x4067EF: main (mandatory.cpp:106)
+==83750==  Address 0x4de735a is 0 bytes after a block of size 42 alloc'd
+==83750==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==83750==    by 0x40763B: ft_calloc (get_next_line_utils.c:69)
+==83750==    by 0x40753E: ft_strjoin (get_next_line_utils.c:46)
+==83750==    by 0x40770A: read_from_file (get_next_line_utils.c:100)
+==83750==    by 0x40737C: get_next_line (get_next_line.c:30)
+==83750==    by 0x402CD6: gnl(int, char const*) (gnl.cpp:20)
+==83750==    by 0x4067EF: main (mandatory.cpp:106)
+https://github.com/Tripouille/gnlTester?tab=readme-ov-file
+*/
