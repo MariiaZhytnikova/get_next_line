@@ -6,7 +6,7 @@
 /*   By: mzhitnik <mzhitnik@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 12:40:51 by mzhitnik          #+#    #+#             */
-/*   Updated: 2024/11/28 18:36:17 by mzhitnik         ###   ########.fr       */
+/*   Updated: 2024/11/30 15:48:03 by mzhitnik         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 char	*ft_strchr(const char *str, int c)
 {
+	if (str == NULL)
+		return (NULL);
 	while (*str)
 	{
 		if (*str == (unsigned char)c)
@@ -49,6 +51,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		res[i++] = *s1++;
 	while (i < s1_len + s2_len)
 		res[i++] = *s2++;
+	res[i] = '\0';
 	return (res);
 }
 
@@ -89,44 +92,41 @@ void	read_from_file(char **big_buffer, int fd)
 	{
 		bytes_read = read(fd, buff, BUFFER_SIZE);
 		if (bytes_read == -1)
-		{
-			free(buff);
 			return ;
-		}
-		buff[bytes_read] = '\0';
+		buff[bytes_read] = 0;
 		temp = ft_strjoin(*big_buffer, buff);
 		free(*big_buffer);
 		*big_buffer = temp;
 		if (ft_strchr(buff, '\n'))
 			break ;
 	}
-	free (buff);
+	free(buff);
 }
 
-void	ft_line_res(char **big_buffer, char **line, int buff_len, int line_len)
+void	ft_line_res(char **big_buffer, char **line, size_t line_len)
 {
 	char	*next;
-	int		j;
-	int		i;
+	size_t	i;
 
 	*line = ft_calloc(line_len + 2, sizeof(char));
 	if (!(*line))
 		return ;
-	j = 0;
-	while (j++ < line_len)
-		(*line)[j - 1] = (*big_buffer)[j - 1];
-	j--;
-	if ((*big_buffer)[j] == '\n')
-		(*line)[j++] = '\n';
-	(*line)[j++] = '\0';
-	j = 0;
-	i = line_len +1;
-	next = ft_calloc(buff_len - line_len + 1, sizeof(char));
-	if (!next)
+	i = 0;
+	while (i < line_len)
+	{
+		(*line)[i] = (*big_buffer)[i];
+		i++;
+	}
+	if ((*big_buffer)[i] == '\n')
+		(*line)[i++] = '\n';
+	(*line)[i] = '\0';
+	if ((*big_buffer)[i])
+	{
+		next = ft_strjoin(*big_buffer + i, "");
+		free(*big_buffer);
+		*big_buffer = next;
 		return ;
-	while ((*big_buffer)[i] != '\0')
-		next[j++] = (*big_buffer)[i++];
-	next[j] = '\0';
+	}
 	free(*big_buffer);
-	*big_buffer = next;
+	*big_buffer = NULL;
 }
