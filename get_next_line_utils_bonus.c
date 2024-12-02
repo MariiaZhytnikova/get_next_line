@@ -84,9 +84,12 @@ void	read_from_file(char **big_buffer, int fd)
 	char	*temp;
 	int		bytes_read;
 
-	buff = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
-	if (!buff)
+	bytes_read = read(fd, buff, BUFFER_SIZE);
+	if (bytes_read < 0)
+	{
+		free(buff);
 		return ;
+	}
 	bytes_read = 1;
 	while (bytes_read > 0)
 	{
