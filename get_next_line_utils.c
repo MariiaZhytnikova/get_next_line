@@ -91,8 +91,11 @@ void	read_from_file(char **big_buffer, int fd)
 	while (bytes_read > 0)
 	{
 		bytes_read = read(fd, buff, BUFFER_SIZE);
-		if (bytes_read == -1)
+		if (bytes_read < 0)
+		{
+			free(buff);
 			return ;
+		}
 		buff[bytes_read] = 0;
 		temp = ft_strjoin(*big_buffer, buff);
 		free(*big_buffer);
