@@ -18,7 +18,7 @@ char	*get_next_line(int fd)
 	char		*line;
 	size_t		line_len;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	if (!big_buffer[fd])
 		big_buffer[fd] = ft_calloc(1, sizeof (char));
